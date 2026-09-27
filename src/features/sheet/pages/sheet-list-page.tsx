@@ -8,9 +8,11 @@ import { CornerDownLeft, Plus } from 'lucide-react';
 import { SheetListItem } from '../components/sheet-list-item';
 import { ShoppingItemModel, ShoppingListModel } from '@/types/shopping-list';
 import { SheetShareDialog } from '../components/SheetShareDialog';
+import { SheetDeleteConfirmDialog } from '../components/sheet-delete-confirm-dialog';
 
 export function SheetListPage() {
   const [selectedSheet, setSelectedSheet] = useState<ShoppingListModel | null>(null);
+  const [sheetToDelete, setSheetToDelete] = useState<{ id: string; name: string } | null>(null);
   const { sheets, addSheet, duplicateSheet, editSheet, deleteSheet } = useBoundStore(
     useShallow((state) => ({
       sheets: state.sheets,
@@ -33,7 +35,12 @@ export function SheetListPage() {
   };
 
   const handleDeleteSheet = (sheet: { id: string; name: string }) => {
-    deleteSheet(sheet.id);
+    setSheetToDelete(sheet);
+  };
+
+  const confirmDeleteSheet = (sheetId: string) => {
+    deleteSheet(sheetId);
+    setSheetToDelete(null);
   };
 
   const [value, setValue] = useState('');
@@ -136,6 +143,11 @@ export function SheetListPage() {
       {isOpenShare && selectedSheet && (
         <SheetShareDialog onClose={() => setIsOpenShare(false)} sheet={selectedSheet} />
       )}
+      <SheetDeleteConfirmDialog
+        sheet={sheetToDelete}
+        onClose={() => setSheetToDelete(null)}
+        onConfirm={confirmDeleteSheet}
+      />
     </>
   );
 }
