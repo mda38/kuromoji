@@ -20,6 +20,7 @@ type Props = {
   isAllChecked: boolean;
   onDelete: () => void;
   onEdit: (name: string) => void;
+  onDuplicate: () => void;
   onOpen: () => void;
 };
 
@@ -32,6 +33,7 @@ export function SheetListItem({
   isAllChecked,
   onDelete,
   onEdit,
+  onDuplicate,
   onOpen,
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
@@ -116,6 +118,7 @@ export function SheetListItem({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onSelect={() => setIsEdit(true)}>リスト名を編集</DropdownMenuItem>
+            <DropdownMenuItem onSelect={onDuplicate}>シートを複製</DropdownMenuItem>
             <DropdownMenuItem onSelect={onOpen}>シートを共有</DropdownMenuItem>
             <DropdownMenuItem className="" onSelect={onDelete}>
               リストを削除
