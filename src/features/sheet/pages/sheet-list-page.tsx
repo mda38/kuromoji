@@ -11,10 +11,11 @@ import { SheetShareDialog } from '../components/SheetShareDialog';
 
 export function SheetListPage() {
   const [selectedSheet, setSelectedSheet] = useState<ShoppingListModel | null>(null);
-  const { sheets, addSheet, editSheet, deleteSheet } = useBoundStore(
+  const { sheets, addSheet, duplicateSheet, editSheet, deleteSheet } = useBoundStore(
     useShallow((state) => ({
       sheets: state.sheets,
       addSheet: state.addSheet,
+      duplicateSheet: state.duplicateSheet,
       editSheet: state.editSheet,
       deleteSheet: state.deleteSheet,
     })),
@@ -86,6 +87,7 @@ export function SheetListPage() {
                   // シート一覧に関係する処理
                   onDelete={() => handleDeleteSheet({ id: sheet.id, name: sheet.name })}
                   onEdit={(name: string) => confirmEditingSheet(sheet.id, name)}
+                  onDuplicate={() => duplicateSheet(sheet.id)}
                   onOpen={() => {
                     setIsOpenShare(true);
                     setSelectedSheet(sheet);

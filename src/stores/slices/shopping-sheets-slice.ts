@@ -15,6 +15,7 @@ type State = {
 
 type Action = {
   addSheet: (name: string) => void;
+  duplicateSheet: (sheetId: string) => void;
   importSheet: (sheet: ShoppingListModel) => void;
   editSheet: (sheet: { id: string; name: string }) => void;
   deleteSheet: (id: string) => void;
@@ -65,6 +66,20 @@ export const createShoppingSheetsSlice: SliceCreator<ShoppingSheetsSlice> = (set
     };
     set((state) => {
       state.sheets.push(newSheet);
+    });
+  },
+  duplicateSheet: (sheetId: string) => {
+    set((state) => {
+      const source = state.sheets.find((sheet) => sheet.id === sheetId);
+      if (!source) return;
+
+      state.sheets.push({
+        id: createId(),
+        name: source.name,
+        shareId: null,
+        categories: source.categories.map((category) => ({ ...category })),
+        items: source.items.map((item) => ({ ...item, checked: false })),
+      });
     });
   },
   importSheet: (sheet: ShoppingListModel) => {
